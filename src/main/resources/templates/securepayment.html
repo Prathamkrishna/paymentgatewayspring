@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Hello you!</title>
+    <link rel="stylesheet" th:href="@{/main.css}">
+</head>
+<script th:inline="javascript">
+    const name = [[${name}]];
+</script>
+<body>
+<h2>Hello <span th:text="${name}"></span>!</h2>
+<h4>Your total billed amount is <span th:text="${amount}"></span> INR, choose your mode of payment!</h4>
+<div th:id="root">
+    <div id="container">
+                <span id="Visa" th:onclick="clickPayment(Visa)">
+                    <img alt="Visa" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/1200px-Visa.svg.png" width="300" height="200">
+                    <br />
+                    <h3>VISA</h3>
+                </span>
+        <span id="Mastercard" th:onclick="clickPayment(Mastercard)">
+                    <img alt="MasterCard" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/2560px-MasterCard_Logo.svg.png" width="300" height="200">
+                    <br />
+                    <h3>MasterCard</h3>
+                </span>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/index.js}"></script>
+</body>
+</html>
