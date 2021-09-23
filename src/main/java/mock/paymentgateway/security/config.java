@@ -38,7 +38,7 @@ public class config extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http){
         try {
             http.authorizeRequests()
-                    .antMatchers("/user/authenticate", "/").hasRole("USER")
+                    .antMatchers("/user/authenticate", "/", "/secure/auth").hasRole("USER")
 //                    .antMatchers("/", "jsptrial").permitAll()
                     .and()
                     .formLogin();
