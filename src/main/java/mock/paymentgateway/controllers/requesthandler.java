@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class requesthandler {
    @GetMapping("/user/authenticate")
     public String authenticateUser(){
+
        return "Authenticate!";
    }
 

@@ -7,10 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.util.logging.Logger;
+
+import mock.paymentgateway.security.securityService;
 
 @Configuration
 @EnableWebSecurity
@@ -22,13 +22,13 @@ public class config extends WebSecurityConfigurerAdapter {
         try {
             auth
                     .inMemoryAuthentication()
-                    .withUser("gatewayuser")
+                    .withUser(securityService.getUsernames(1))
                     .password(getBCryptPasswordEncoder().encode("gatewayuser"))
                     .roles("USER")
                     .and()
-                    .withUser("prathamkrishna")
+                    .withUser(securityService.getUsernames(0))
                     .password(getBCryptPasswordEncoder().encode("pratham"))
-                    .authorities("USER");
+                    .roles("USER");
         } catch (Exception e){
             Logger.getLogger(String.valueOf(e));
         }
