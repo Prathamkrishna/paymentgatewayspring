@@ -1,6 +1,7 @@
 package mock.paymentgateway.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,17 +18,20 @@ import mock.paymentgateway.security.securityService;
 @Slf4j
 public class config extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
         try {
             auth
                     .inMemoryAuthentication()
                     .withUser(securityService.getUsernames(1))
-                    .password(getBCryptPasswordEncoder().encode("gatewayuser"))
+                    .password(bCryptPasswordEncoder.encode(securityService.getPassword(1)))
                     .roles("USER")
                     .and()
                     .withUser(securityService.getUsernames(0))
-                    .password(getBCryptPasswordEncoder().encode("pratham"))
+                    .password(bCryptPasswordEncoder.encode(securityService.getPassword(0)))
                     .roles("USER");
         } catch (Exception e){
             Logger.getLogger(String.valueOf(e));
@@ -47,9 +51,9 @@ public class config extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Bean
-    protected BCryptPasswordEncoder getBCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    protected BCryptPasswordEncoder getBCryptPasswordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
 
 }
