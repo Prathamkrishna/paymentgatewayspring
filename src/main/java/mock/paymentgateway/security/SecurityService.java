@@ -1,9 +1,9 @@
 package mock.paymentgateway.security;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-public class securityService {
+@Service
+public class SecurityService {
     private static final String[] userNames = new String[]{
             "pratham",
             "gatewayuser"

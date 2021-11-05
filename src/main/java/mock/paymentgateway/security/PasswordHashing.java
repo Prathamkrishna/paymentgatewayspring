@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 // storing passwords securely for user auth flow.
-public class passwordHashing {
+public class PasswordHashing {
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    public PasswordHashing(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     private final String[] userPasswords = new String[]{
             bCryptPasswordEncoder.encode("password1"),

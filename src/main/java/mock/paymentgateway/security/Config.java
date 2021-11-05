@@ -2,36 +2,39 @@ package mock.paymentgateway.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import java.util.logging.Logger;
 
-import mock.paymentgateway.security.securityService;
+import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
-public class config extends WebSecurityConfigurerAdapter {
+public class Config extends WebSecurityConfigurerAdapter {
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    Config(BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth){
         try {
             auth
                     .inMemoryAuthentication()
-                    .withUser(securityService.getUsernames(1))
-                    .password(bCryptPasswordEncoder.encode(securityService.getPassword(1)))
+                    .withUser(SecurityService.getUsernames(1))
+                    .password(bCryptPasswordEncoder.encode(SecurityService.getPassword(1)))
                     .roles("USER")
                     .and()
-                    .withUser(securityService.getUsernames(0))
-                    .password(bCryptPasswordEncoder.encode(securityService.getPassword(0)))
+                    .withUser(SecurityService.getUsernames(0))
+                    .password(bCryptPasswordEncoder.encode(SecurityService.getPassword(0)))
                     .roles("USER");
         } catch (Exception e){
             Logger.getLogger(String.valueOf(e));
@@ -41,19 +44,15 @@ public class config extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http){
         try {
-            http.authorizeRequests()
-                    .antMatchers("/user/authenticate", "/", "/secure/auth").hasRole("USER")
-//                    .antMatchers("/", "jsptrial").permitAll()
+            http
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.GET, "/user/authenticate").hasRole("USER")
                     .and()
-                    .formLogin();
+                    .httpBasic();
         } catch (Exception e){
             Logger.getLogger(String.valueOf(e));
         }
     }
-
-//    @Bean
-//    protected BCryptPasswordEncoder getBCryptPasswordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
 
 }
